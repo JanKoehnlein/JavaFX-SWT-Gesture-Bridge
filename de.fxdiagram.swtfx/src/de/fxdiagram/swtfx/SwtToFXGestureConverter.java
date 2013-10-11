@@ -164,7 +164,7 @@ public class SwtToFXGestureConverter implements GestureListener {
 		currentState.totalScrollX += event.xDirection;
 		currentState.totalScrollY += event.yDirection;
 		Point screenPosition = canvas.toDisplay(event.x, event.y);
-		System.out.println(fxEventType + " " + screenPosition);
+//		System.out.println(fxEventType + " " + screenPosition);
 		sceneListener.scrollEvent(fxEventType, 
 				event.xDirection, event.yDirection, // scrollX, scrollY
 				0, 0,        // totalScrollX, totalScrollY
@@ -186,7 +186,7 @@ public class SwtToFXGestureConverter implements GestureListener {
 		double magnification = (fxEventType == ZoomEvent.ZOOM_FINISHED) 
 				? currentState.lastZoomFactor
 				: event.magnification;
-		System.out.println(fxEventType + " " + magnification);
+//		System.out.println(fxEventType + " " + magnification);
 		sceneListener.zoomEvent(fxEventType,
 				magnification / currentState.lastZoomFactor, // zoom factor
 				magnification,    // totalZoomFactor
@@ -205,7 +205,7 @@ public class SwtToFXGestureConverter implements GestureListener {
 		double rotation = (fxEventType == RotateEvent.ROTATION_FINISHED) 
 				? currentState.lastRotation
 				: -event.rotation;
-		System.out.println(fxEventType + " " + rotation);
+//		System.out.println(fxEventType + " " + rotation);
 		sceneListener.rotateEvent(fxEventType,
 				rotation - currentState.lastRotation, // rotation
 				rotation,               // totalRotation
@@ -229,7 +229,7 @@ public class SwtToFXGestureConverter implements GestureListener {
 			fxEventType = SwipeEvent.SWIPE_RIGHT;
 		else if(event.xDirection < 0) 
 			fxEventType = SwipeEvent.SWIPE_LEFT;
-		System.out.println(fxEventType.toString());
+//		System.out.println(fxEventType.toString());
 		sceneListener.swipeEvent(fxEventType,
 				0,                  // touch
 				event.x, event.y,   // x, y
