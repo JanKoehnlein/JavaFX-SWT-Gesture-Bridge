@@ -20,13 +20,13 @@ import org.eclipse.swt.events.GestureListener;
 import org.eclipse.swt.graphics.Point;
 
 import com.sun.javafx.tk.TKSceneListener;
-import com.sun.javafx.tk.quantum.EmbeddedScene;
 
 /**
  * A gesture listener that converts and transfers SWT {@link GestureEvent}s to an {@link FXCanvas}.
  *  
  * @author Jan Koehnlein
  */
+@SuppressWarnings("restriction")
 public class SwtToFXGestureConverter implements GestureListener {
 
 	enum StateType {
@@ -70,7 +70,7 @@ public class SwtToFXGestureConverter implements GestureListener {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-            	final EmbeddedScene scenePeer = getPrivateField(canvas, "scenePeer");
+            	final Object scenePeer = getPrivateField(canvas, "scenePeer");
                 AccessController.doPrivileged(new PrivilegedAction<Void>() {
                     @Override
                     public Void run() {

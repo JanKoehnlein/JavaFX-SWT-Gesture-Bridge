@@ -7,3 +7,8 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.102.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: de.fxdiagram.swtfx
+Import-Package: com.sun.javafx.tk;version="2.2.0",
+ javafx.application;version="2.2.0",
+ javafx.embed.swt;version="2.2.0",
+ javafx.event;version="2.2.0",
+ javafx.scene.input;version="2.2.0"
