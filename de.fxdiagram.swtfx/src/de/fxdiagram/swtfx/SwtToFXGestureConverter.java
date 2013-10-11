@@ -168,7 +168,7 @@ public class SwtToFXGestureConverter implements GestureListener {
 		sceneListener.scrollEvent(fxEventType, 
 				event.xDirection, event.yDirection, // scrollX, scrollY
 				0, 0,        // totalScrollX, totalScrollY
-				-40.0, 40.0, // xMultiplier, yMultiplier
+				-5.0, 5.0, // xMultiplier, yMultiplier
 				0,           // touchCount 
 				0, 0,        // scrollTextX, scrollTextY
 				0, 0,        // defaultTextX, defaultTextY
