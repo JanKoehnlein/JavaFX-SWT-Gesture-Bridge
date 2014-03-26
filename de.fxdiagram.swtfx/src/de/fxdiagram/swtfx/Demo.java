@@ -56,7 +56,7 @@ public class Demo {
 		Shell shell = new Shell(display);
 		shell.setLayout(new FillLayout());
 		FXCanvas canvas = new FXCanvas(shell, SWT.NONE);
-		SwtToFXGestureConverter.register(canvas);
+		SwtToFXGestureConverter gestureConverter = new SwtToFXGestureConverter(canvas);
 		Scene scene = createScene();
 		canvas.setScene(scene);
 		shell.open();
@@ -64,6 +64,8 @@ public class Demo {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
+		gestureConverter.dispose();
 		display.dispose();
+		
 	}
 }

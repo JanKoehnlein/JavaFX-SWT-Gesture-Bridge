@@ -18,6 +18,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.GestureEvent;
 import org.eclipse.swt.events.GestureListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import com.sun.javafx.tk.TKSceneListener;
 
@@ -47,20 +50,47 @@ public class SwtToFXGestureConverter implements GestureListener {
 		}
 	}
 	
+	private Listener mouseWheelEmulatedEventFilter;
+
 	private FXCanvas canvas;
 	
 	private State currentState;
 
-	public static void register(FXCanvas canvas) {
-		new SwtToFXGestureConverter(canvas); 
-	}
-	
-	private SwtToFXGestureConverter(FXCanvas canvas) {
+	public SwtToFXGestureConverter(final FXCanvas canvas) {
 		this.canvas = canvas;
 		this.currentState = new State(StateType.IDLE);
 		canvas.addGestureListener(this);
-	}
+		Display display = canvas.getDisplay();
+		if (display.getTouchEnabled()) {
+			// register a filter to suppress emulated scroll events that
+			// originate from mouse wheel events on devices that support touch
+			// events (see #430940)
+			mouseWheelEmulatedEventFilter = new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					if (event.widget == canvas) {
+						event.type = SWT.None;
+					}
+				}
+			};
+			display.addFilter(SWT.MouseVerticalWheel,
+					mouseWheelEmulatedEventFilter);
+			display.addFilter(SWT.MouseHorizontalWheel,
+					mouseWheelEmulatedEventFilter);
+		}
+	}	
 	
+	public void dispose() {
+		canvas.removeGestureListener(this);
+		Display display = canvas.getDisplay();
+		if (mouseWheelEmulatedEventFilter != null) {
+			display.removeFilter(SWT.MouseVerticalWheel,
+					mouseWheelEmulatedEventFilter);
+			display.removeFilter(SWT.MouseHorizontalWheel,
+					mouseWheelEmulatedEventFilter);
+		}
+	}
+
 	@Override
 	public void gesture(GestureEvent event) {
 		sendGestureEventToFX(event);
