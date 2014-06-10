@@ -81,8 +81,11 @@ public class SwtToFXGestureConverter implements GestureListener {
 	}	
 	
 	public void dispose() {
-		canvas.removeGestureListener(this);
-		Display display = canvas.getDisplay();
+		if(!canvas.isDisposed()) {
+			canvas.removeGestureListener(this);
+			canvas.dispose();
+		}
+		Display display = Display.getDefault();
 		if (mouseWheelEmulatedEventFilter != null) {
 			display.removeFilter(SWT.MouseVerticalWheel,
 					mouseWheelEmulatedEventFilter);
