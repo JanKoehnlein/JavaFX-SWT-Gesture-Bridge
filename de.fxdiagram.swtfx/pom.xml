@@ -8,6 +8,6 @@
 		<groupId>de.fxdiagram</groupId>
 		<artifactId>de.fxdiagram.maven</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../../FXDiagram.git/de.fxdiagram.maven</relativePath>
+		<relativePath>../../FXDiagram/de.fxdiagram.maven</relativePath>
 	</parent>
 </project>
