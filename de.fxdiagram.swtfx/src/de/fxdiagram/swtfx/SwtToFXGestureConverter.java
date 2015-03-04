@@ -29,7 +29,6 @@ import com.sun.javafx.tk.TKSceneListener;
  *  
  * @author Jan Koehnlein
  */
-@SuppressWarnings("restriction")
 public class SwtToFXGestureConverter implements GestureListener {
 
 	enum StateType {
