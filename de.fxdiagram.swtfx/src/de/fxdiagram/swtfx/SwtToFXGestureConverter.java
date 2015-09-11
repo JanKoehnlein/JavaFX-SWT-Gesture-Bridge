@@ -6,14 +6,6 @@ import java.security.AccessControlContext;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
-import javafx.application.Platform;
-import javafx.embed.swt.FXCanvas;
-import javafx.event.EventType;
-import javafx.scene.input.RotateEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.SwipeEvent;
-import javafx.scene.input.ZoomEvent;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.GestureEvent;
 import org.eclipse.swt.events.GestureListener;
@@ -23,6 +15,14 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import com.sun.javafx.tk.TKSceneListener;
+
+import javafx.application.Platform;
+import javafx.embed.swt.FXCanvas;
+import javafx.event.EventType;
+import javafx.scene.input.RotateEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.SwipeEvent;
+import javafx.scene.input.ZoomEvent;
 
 /**
  * A gesture listener that converts and transfers SWT {@link GestureEvent}s to an {@link FXCanvas}.
