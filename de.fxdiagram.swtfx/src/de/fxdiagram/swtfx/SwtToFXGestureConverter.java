@@ -9,6 +9,8 @@ import java.security.PrivilegedAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.GestureEvent;
 import org.eclipse.swt.events.GestureListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -29,7 +31,7 @@ import javafx.scene.input.ZoomEvent;
  *  
  * @author Jan Koehnlein
  */
-public class SwtToFXGestureConverter implements GestureListener {
+public class SwtToFXGestureConverter implements GestureListener, MouseWheelListener {
 
 	enum StateType {
 		IDLE, SCROLLING, ROTATING, ZOOMING;
@@ -59,6 +61,7 @@ public class SwtToFXGestureConverter implements GestureListener {
 		this.canvas = canvas;
 		this.currentState = new State(StateType.IDLE);
 		canvas.addGestureListener(this);
+		canvas.addMouseWheelListener(this);
 		Display display = canvas.getDisplay();
 		if (display.getTouchEnabled()) {
 			// register a filter to suppress emulated scroll events that
@@ -82,6 +85,7 @@ public class SwtToFXGestureConverter implements GestureListener {
 	public void dispose() {
 		if(!canvas.isDisposed()) {
 			canvas.removeGestureListener(this);
+			canvas.removeMouseWheelListener(this);
 			canvas.dispose();
 		}
 		Display display = Display.getDefault();
@@ -98,6 +102,41 @@ public class SwtToFXGestureConverter implements GestureListener {
 		sendGestureEventToFX(event);
 	}
 
+	@Override
+	public void mouseScrolled(final MouseEvent e) {
+		Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+            	final Object scenePeer = getPrivateField(canvas, "scenePeer");
+                AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                    @Override
+                    public Void run() {
+                    	TKSceneListener sceneListener = getPrivateField(scenePeer, "sceneListener");
+						if (sceneListener == null) {
+                            return null;
+                        }
+						Event mockEvent = new Event();
+						mockEvent.stateMask = e.stateMask;
+						mockEvent.x = e.x;
+						mockEvent.y = e.y;
+						mockEvent.xDirection = 0;
+						mockEvent.yDirection = e.count;
+						mockEvent.widget = e.widget;
+						mockEvent.display = e.display;
+						mockEvent.time = e.time;
+						mockEvent.data = e.data;
+						GestureEvent mockGestureEvent = new GestureEvent(mockEvent);
+						mockGestureEvent.stateMask = e.stateMask;
+						sendScrollEvent(ScrollEvent.SCROLL_STARTED, mockGestureEvent, sceneListener);
+						sendScrollEvent(ScrollEvent.SCROLL_FINISHED, mockGestureEvent, sceneListener);
+                        return null;
+                    }
+
+                }, (AccessControlContext) getPrivateField(scenePeer, "accessCtrlCtx"));
+            }
+        });
+	}
+	
 	protected void sendGestureEventToFX(final GestureEvent event) {
         Platform.runLater(new Runnable() {
             @Override
