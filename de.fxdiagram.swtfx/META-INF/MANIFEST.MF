@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: FXDiagram JavaFX-SWT Gesture Bridge
 Bundle-SymbolicName: de.fxdiagram.swtfx
-Bundle-Version: 0.32.0.qualifier
+Bundle-Version: 0.33.1.qualifier
 Require-Bundle: org.eclipse.swt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
